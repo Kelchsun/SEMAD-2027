@@ -29,7 +29,7 @@ export function makeApp({env=process.env,fetcher=fetch,db:injectedDB}={}){
    if(!await db.rpc('semad_rate',{p_key:key,p_limit:limit}))throw err('Muitas tentativas. Aguarde um minuto e tente novamente.',429);
   }
   if(path==='/api/chat'&&req.method==='POST'){
-   if(!env.OPENAI_API_KEY)throw err('O assistente ainda não foi ativado. Consulte a seção Dúvidas.',503);
+   if(!env.GEMINI_API_KEY)throw err('O assistente ainda não foi ativado. Consulte a seção Dúvidas.',503);
    const x=await input(req);const messages=validateMessages(x.mensagens);
    await rate('chat',6);
    if(!await db.rpc('semad_rate',{p_key:'chat-global:'+Math.floor(Date.now()/60000),p_limit:30}))throw err('O assistente está com muitos acessos. Tente novamente em um minuto.',429);

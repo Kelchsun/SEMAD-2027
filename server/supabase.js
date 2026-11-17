@@ -15,7 +15,7 @@ export function database(env,fetcher=fetch){
    if(result?.message?.includes('settings_required'))throw err('Confirme as condições de certificação desta palestra antes de emitir.',409);
    if(result?.code==='23503')throw err('Inscrição ou palestra não encontrada.',404);
    if(result?.code==='23514'||result?.code==='22P02')throw err('Dados inválidos. Confira os campos enviados.',400);
-   if(result?.code==='PGRST202'||result?.code==='42P01')throw err(path.includes('semad_chat_reserve')?'Execute supabase/02-chat-openai.sql no SQL Editor do Supabase.':'Execute supabase/01-schema.sql no SQL Editor do Supabase.',503);
+   if(result?.code==='PGRST202'||result?.code==='42P01')throw err(path.includes('semad_chat_reserve')?'Execute supabase/02-chat.sql no SQL Editor do Supabase.':'Execute supabase/01-schema.sql no SQL Editor do Supabase.',503);
    throw err('O banco não concluiu a operação. Confira as variáveis e o SQL no Supabase.',503);
   }return result;
  }
