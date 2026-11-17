@@ -2,6 +2,10 @@
 
 Este é o projeto completo para GitHub/Vercel, com o visual do HTML fornecido, inscrições reais, login Supabase e painel de presença/certificados. Não exige domínio próprio para hospedar, registrar inscrições ou baixar certificados. Resend é opcional.
 
+## Assistente OpenAI
+
+O chat está conectado ao backend `/api/chat`. Para ativar, siga `OPENAI-ATIVAR.md`: execute também `supabase/02-chat-openai.sql` e cadastre `OPENAI_API_KEY` na Vercel. O domínio próprio não é necessário. Sem a chave, o chat informa indisponibilidade e as inscrições continuam funcionando.
+
 ## 1. Executar o SQL no seu Supabase
 
 1. Abra https://supabase.com/dashboard e clique no projeto da SEMAD.
@@ -10,7 +14,8 @@ Este é o projeto completo para GitHub/Vercel, com o visual do HTML fornecido, i
 4. Abra `supabase/01-schema.sql` deste pacote em um editor de texto.
 5. Copie o conteúdo inteiro e cole na consulta.
 6. Clique em **Run**. Espere a confirmação de sucesso.
-7. Em **Table Editor**, as tabelas começam com `semad_`. Elas não têm cadastros fictícios.
+7. Para o chat, execute também `supabase/02-chat-openai.sql` em uma nova consulta, seguindo o mesmo procedimento.
+8. Em **Table Editor**, as tabelas começam com `semad_`. Elas não têm cadastros fictícios.
 
 O script é idempotente: executá-lo novamente não apaga inscrições e não duplica as dez atividades provisórias. As tabelas anteriores do site no Sites não são migradas automaticamente. Este é um banco separado.
 
@@ -162,7 +167,7 @@ Abra `http://localhost:3000`. Não publique `.env.local`.
 
 ## Verificações realizadas e limites
 
-Passaram seis testes automatizados que executam o SQL em PostgreSQL local e verificam migração repetida, bloqueio de privilégios anônimos/autenticados, cadastro persistido, e-mails normalizados, duplicidade, validação, limite de tentativas, CSRF, login, cookies HttpOnly/Secure, renovação de sessão, autorização, presença por palestra, emissão, ausência de Resend e revogação.
+Passaram nove testes automatizados que executam o SQL em PostgreSQL local e verificam migração repetida, bloqueio de privilégios anônimos/autenticados, cadastro persistido, e-mails normalizados, duplicidade, validação, limite de tentativas, CSRF, login, cookies HttpOnly/Secure, renovação de sessão, autorização, presença por palestra, emissão, ausência de Resend e revogação.
 
 Sem acesso às suas contas, não foi feito deploy na sua Vercel nem execução no seu Supabase. O transporte de autenticação Supabase foi testado com respostas simuladas e seus cabeçalhos foram conferidos; o login com suas credenciais será validado após seu deploy. Não houve envio de e-mails reais. Não foi possível validar o visual pelo navegador nesta execução.
 
