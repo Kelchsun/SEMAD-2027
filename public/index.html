@@ -106,24 +106,82 @@ footer{background:var(--k);color:#bbb;padding:48px 0 calc(48px + env(safe-area-i
 footer .wrap{display:grid;grid-template-columns:2fr 1fr;gap:30px}footer strong{color:#fff}footer ul{list-style:none;padding:0;display:flex;gap:18px;flex-wrap:wrap}
 dialog{border:0;padding:0;max-width:min(560px,92vw);width:100%;border-radius:4px}dialog::backdrop{background:rgba(0,0,0,.7)}
 dialog .in{padding:36px}dialog h3{font-size:26px;margin:6px 0 12px}dialog .x{float:right;background:none;border:0;font-size:30px;cursor:pointer;line-height:1;padding:4px 10px}
+.tabs .ds{display:none}
 @media(max-width:900px){
  section{padding:72px 0}
- nav,header>.wrap>.btn{display:none}#mb{display:block}
- header.open nav{display:flex;position:fixed;inset:var(--h) 0 auto;background:var(--k);flex-direction:column;padding:12px 24px 28px;gap:4px}
+ header .wrap{gap:12px}
+ nav,header>.wrap>.btn{display:none}
+ header .adm{margin-left:auto}
+ #mb{display:grid;place-items:center;margin-left:0;order:3}
+ header.open nav{display:flex;position:fixed;inset:var(--h) 0 auto;background:var(--k);flex-direction:column;padding:12px 24px 28px;gap:4px;max-height:calc(100svh - var(--h));overflow:auto}
  header.open nav a{padding:14px 0;font-size:17px}
  .hero{display:block;padding:var(--h) 0 110px}
  .hero>img{position:static;height:min(62vw,420px);object-position:70% 15%}.hero:before{display:none}
  .hero .wrap{padding-top:28px}
- .cd{grid-template-columns:1fr;margin:-60px 16px 0}.cd .n{gap:16px;justify-content:space-between}.cd .n strong{font-size:36px}.cd .l,.cd .r{padding:22px}
- .hl,.pil,.ev,footer .wrap,.insc .g{grid-template-columns:1fr}.pil{gap:36px}.insc .g{gap:40px}
+ .cd{grid-template-columns:1fr;margin:-60px 16px 0}
+ .cd .n{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.cd .n div{min-width:0}
+ .cd .n strong{font-size:clamp(28px,8.5vw,40px)}.cd .l,.cd .r{padding:20px}
+ .cd .r .btn{width:100%;text-align:center}
+ .hl,footer .wrap,.insc .g{grid-template-columns:1fr}.insc .g{gap:40px}
+ .pil,.ev{grid-template-columns:1fr 1fr;gap:28px}
  .ed{grid-template-columns:1fr 1fr;gap:16px}.f1{grid-column:1/-1}.f2{grid-column:1/-1;margin:0;aspect-ratio:3/4}.f3{grid-column:1/2;grid-row:auto;margin:0}.tx{grid-column:2/3;grid-row:auto}
+ .tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:0;overflow:visible}
+ .tabs button{padding:12px 4px;text-align:center;line-height:1.1}
+ .tabs button b{display:block;font-size:22px;font-weight:500}
+ .tabs .dl{display:none}.tabs .ds{display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-top:4px}
+ footer{padding-bottom:calc(104px + env(safe-area-inset-bottom))}
 }
-#co{position:fixed;right:max(18px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:40;font:700 15px Manrope;background:var(--k);color:#fff;border:2px solid var(--r);border-radius:3px;padding:14px 18px;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.3)}
-#cw{position:fixed;right:max(18px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:45;width:min(380px,calc(100vw - 36px));height:min(560px,calc(100svh - 110px));background:#fff;display:flex;flex-direction:column;box-shadow:0 16px 48px rgba(0,0,0,.4);border-top:4px solid var(--r)}#cw[hidden]{display:none}
-#cw header{position:static;height:auto;background:var(--k);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:15px}#cc{background:none;border:0;color:#fff;font-size:26px;line-height:1;cursor:pointer;padding:0 6px}
-#cl{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px;font-size:15px}#cl .m{margin:0;padding:10px 12px;max-width:88%;line-height:1.45}.m.u{align-self:flex-end;background:var(--k);color:#fff}.m.a{background:var(--bg)}.m.n{background:#fff4e0;font-size:13px}
-.ch{display:flex;flex-wrap:wrap;gap:6px}.ch button{font:600 13px Manrope;border:1px solid var(--k);background:#fff;padding:6px 10px;cursor:pointer;border-radius:3px}
-#cf{display:flex;gap:8px;padding:10px 12px 4px}#cf input{flex:1;font:inherit;padding:10px;border:2px solid #bbb;border-radius:3px;min-width:0}#cf button{padding:10px 14px;font-size:14px}#cn{font-size:12px;color:var(--t2);padding:0 12px 10px}
+@media(max-width:600px){
+ .wrap{padding:0 20px}
+ section{padding:60px 0}
+ .pil,.ev{grid-template-columns:1fr}
+ .ed{grid-template-columns:1fr}.f3{grid-column:1/-1;aspect-ratio:4/5}.tx{grid-column:1/-1;padding-top:0}
+ .about{text-align:left}.about h2,.about .lead{margin-left:0}
+ .hero .acts .btn{flex:1 1 auto;text-align:center}
+ .ev article{padding:22px}
+ dialog .in{padding:24px}
+}
+/* assistente */
+#co{position:fixed;right:max(20px,env(safe-area-inset-right));bottom:max(20px,env(safe-area-inset-bottom));z-index:40;display:flex;align-items:center;gap:10px;font:700 15px Manrope,sans-serif;background:var(--k);color:#fff;border:0;border-radius:999px;padding:10px 20px 10px 10px;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.35),0 0 0 1px rgba(255,255,255,.08) inset;transition:transform .2s,box-shadow .2s}
+#co:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(0,0,0,.4)}
+#co .ic{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--r);flex:none;position:relative}
+#co .ic:after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2px solid var(--r);opacity:0;animation:pulse 2.6s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.9);opacity:.7}70%,100%{transform:scale(1.35);opacity:0}}
+#cw{position:fixed;right:max(20px,env(safe-area-inset-right));bottom:max(20px,env(safe-area-inset-bottom));z-index:60;width:min(400px,calc(100vw - 40px));height:min(620px,calc(100svh - 40px));background:#fff;display:flex;flex-direction:column;border-radius:18px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.35),0 0 0 1px rgba(0,0,0,.06);animation:cwIn .22s ease-out}
+@keyframes cwIn{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
+#cw header{position:static;height:auto;background:var(--k);padding:14px 12px 14px 16px;padding-top:max(14px,env(safe-area-inset-top));display:flex;align-items:center;gap:12px;color:#fff}
+#cw .av{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--r);flex:none}
+#cw .hd-t{display:flex;flex-direction:column;line-height:1.25;min-width:0;flex:1}
+#cw .hd-t strong{font-size:15px}#cw .hd-t small{font-size:12px;color:#bdbdbd;display:flex;align-items:center;gap:6px}
+#cw .hd-t small:before{content:"";width:7px;height:7px;border-radius:50%;background:#3ccf6e;flex:none}
+#cc{display:grid;place-items:center;width:40px;height:40px;background:none;border:0;border-radius:50%;color:#fff;cursor:pointer;flex:none}#cc:hover{background:rgba(255,255,255,.1)}
+#cl{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:18px 16px;display:flex;flex-direction:column;gap:10px;font-size:15px;background:#fafafa}
+#cl .m{margin:0;padding:11px 14px;max-width:85%;line-height:1.5;border-radius:18px;white-space:pre-line;overflow-wrap:anywhere;animation:mIn .18s ease-out}
+@keyframes mIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.m.u{align-self:flex-end;background:var(--r);color:#fff;border-bottom-right-radius:6px}
+.m.a{align-self:flex-start;background:#fff;color:var(--k);border:1px solid #e6e6e6;border-bottom-left-radius:6px}
+.m.n{align-self:flex-start;background:#fff4e0;font-size:13px;border-radius:12px}
+.m.typing{display:flex;gap:5px;align-items:center;padding:14px 16px}
+.m.typing i{width:7px;height:7px;border-radius:50%;background:#9a9a9a;animation:dot 1.2s infinite ease-in-out}
+.m.typing i:nth-child(2){animation-delay:.15s}.m.typing i:nth-child(3){animation-delay:.3s}
+@keyframes dot{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-5px);opacity:1}}
+.ch{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+.ch button{font:600 13px Manrope,sans-serif;border:1.5px solid #d8d8d8;background:#fff;color:var(--k);padding:8px 14px;cursor:pointer;border-radius:999px;transition:border-color .15s,color .15s}
+.ch button:hover{border-color:var(--r);color:var(--r)}
+#cf{display:flex;gap:8px;align-items:center;padding:12px 12px 6px;border-top:1px solid #eee;background:#fff}
+#cf input{flex:1;font:400 16px Manrope,sans-serif;padding:12px 16px;border:1.5px solid #d8d8d8;border-radius:999px;min-width:0;background:#f6f6f6;outline:none;transition:border-color .15s,background .15s}
+#cf input:focus{border-color:var(--k);background:#fff}
+#cs{display:grid;place-items:center;width:46px;height:46px;padding:0;border-radius:50%;flex:none}
+#cn{font-size:11.5px;color:#767676;padding:0 16px 12px;padding-bottom:max(12px,env(safe-area-inset-bottom));background:#fff;margin:0;text-align:center}
+@media(max-width:600px){
+ #co{padding:0;width:58px;height:58px;justify-content:center}
+ #co .ic{width:58px;height:58px}
+ #co .co-t{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+ #cw{inset:0;width:100%;height:100%;height:100dvh;border-radius:0;animation:cwUp .22s ease-out}
+ @keyframes cwUp{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+ body.chat-open{overflow:hidden}
+}
+@media(prefers-reduced-motion:reduce){#co .ic:after,#cw,#cl .m,.m.typing i{animation:none!important}}
 @media print{#co,#cw{display:none!important}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 @media print{body>*:not(main),main>section:not(#inscricao),.insc form,.insc .t,.btn{display:none!important}}
@@ -238,11 +296,12 @@ dialog .in{padding:36px}dialog h3{font-size:26px;margin:6px 0 12px}dialog .x{flo
 <footer><div class="wrap"><div><strong>SEMAD 2027</strong><br>Semana Acadêmica de Administração da UFRRJ<br>15 a 19 de março de 2027</div>
 <ul><li><a href="#evento">O evento</a></li><li><a href="#programacao">Programação</a></li><li><a href="#inscricao">Inscrições</a></li><li><a href="#duvidas">Dúvidas</a></li><li><a href="#inscricao" id="privacy-link">Privacidade</a></li></ul></div></footer>
 
-<button id="co" type="button" aria-controls="cw">Dúvidas? Pergunte ao assistente</button>
-<div id="cw" role="dialog" aria-label="Assistente da SEMAD 2027" hidden>
- <header><span>Assistente da SEMAD</span><button id="cc" aria-label="Fechar assistente">×</button></header>
- <div id="cl" aria-live="polite"><p class="m a">Olá! Posso tirar dúvidas sobre datas, tema, programação e inscrição da SEMAD 2027.</p><div class="ch"><button type="button">Quando acontece?</button><button type="button">Como me inscrevo?</button><button type="button">Haverá certificado?</button></div></div>
- <form id="cf"><label class="sr" for="ci">Sua pergunta</label><input id="ci" maxlength="500" autocomplete="off" placeholder="Digite sua pergunta"><button class="btn" id="cs">Enviar</button></form>
+<button id="co" type="button" aria-controls="cw" aria-expanded="false"><span class="ic" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-4.9A8 8 0 1 1 21 12z"/><path d="M9 11.5h.01M12 11.5h.01M15 11.5h.01" stroke-width="2.6"/></svg></span><span class="co-t">Dúvidas? Pergunte ao assistente</span></button>
+<div id="cw" role="dialog" aria-modal="false" aria-labelledby="cw-t" hidden>
+ <header><span class="av" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M12 2l1.8 5.4L19 9l-5.2 1.6L12 16l-1.8-5.4L5 9l5.2-1.6zM19 14l.9 2.6 2.6.9-2.6.9L19 21l-.9-2.6-2.6-.9 2.6-.9z"/></svg></span><span class="hd-t"><strong id="cw-t">Assistente da SEMAD</strong><small>Online · responde com IA</small></span><button id="cc" type="button" aria-label="Fechar assistente"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></header>
+ <div id="cl" aria-live="polite"><p class="m a">Olá! 👋 Posso tirar dúvidas sobre datas, tema, programação e inscrição da SEMAD 2027.</p><div class="ch"><button type="button">Quando acontece?</button><button type="button">Como me inscrevo?</button><button type="button">Haverá certificado?</button></div></div>
+ <form id="cf"><label class="sr" for="ci">Sua pergunta</label><input id="ci" maxlength="500" autocomplete="off" enterkeyhint="send" placeholder="Digite sua pergunta…"><button class="btn" id="cs" aria-label="Enviar pergunta"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></form>
+ <p id="cn">Respostas geradas por IA podem conter erros. Confira em Dúvidas.</p>
 </div>
 <dialog id="dlg" aria-labelledby="dt"><div class="in"><button class="x" id="dx" aria-label="Fechar">×</button><p class="cat" id="dc" style="color:var(--r);font-weight:700;font-size:13px"></p><h3 id="dt"></h3><p id="dr" class="lead"></p><p style="margin-top:16px"><b>Horário:</b> <span id="dh"></span><br><b>Palestrante:</b> <span id="dp"></span></p><p class="prev">Prévia temática — sujeita a confirmação</p></div></dialog>
 

@@ -29,7 +29,10 @@ function tick(){const n=Date.now();
 const iv=setInterval(tick,1000);tick();
 // programação
 const tabs=$("tabs"),evs=$("evs");let cur=0,opener=null;
-CONFIG.dias.forEach((x,i)=>{const b=document.createElement("button");b.role="tab";b.id="tb"+i;b.textContent=x.d;b.setAttribute("aria-controls","evs");b.onclick=()=>show(i,true);tabs.append(b)});
+CONFIG.dias.forEach((x,i)=>{const b=document.createElement("button");b.role="tab";b.id="tb"+i;b.setAttribute("aria-label",x.d);
+ const [n,...r]=x.d.split(" "),mes=r.at(-1)||"";const nb=document.createElement("b"),dl=document.createElement("span"),ds=document.createElement("span");
+ nb.textContent=n;dl.className="dl";dl.textContent=" "+r.join(" ");ds.className="ds";ds.textContent=mes.slice(0,3);ds.setAttribute("aria-hidden","true");
+ b.append(nb,dl,ds);b.setAttribute("aria-controls","evs");b.onclick=()=>show(i,true);tabs.append(b)});
 function show(i,f){cur=i;[...tabs.children].forEach((b,j)=>{b.setAttribute("aria-selected",j===i);b.tabIndex=j===i?0:-1});if(f)tabs.children[i].focus();
  evs.setAttribute("aria-labelledby","tb"+i);evs.innerHTML="";
  CONFIG.dias[i].t.forEach((t,j)=>{const a=document.createElement("article");a.innerHTML=`<span class="cat"></span><h3></h3><p></p><span class="m">Horário: A confirmar · Palestrante: A confirmar</span><button class="btn" type="button">Ver detalhes</button>`;
@@ -42,18 +45,20 @@ $("dlg").addEventListener("close",()=>opener&&opener.focus());
 $("dlg").addEventListener("click",e=>{if(e.target===$("dlg"))$("dlg").close()});
 // assistente
 const cw=$("cw"),cl=$("cl"),cf=$("cf");let CH=[],cb=false;
-function cx(){cw.hidden=true;$("co").hidden=false;$("co").focus()}
-$("co").onclick=()=>{cw.hidden=false;$("co").hidden=true;$("ci").focus()};$("cc").onclick=cx;
+const co=$("co"),small=matchMedia("(max-width:600px)");
+function cx(){cw.hidden=true;co.hidden=false;co.setAttribute("aria-expanded","false");document.body.classList.remove("chat-open");co.focus()}
+co.onclick=()=>{cw.hidden=false;co.hidden=true;co.setAttribute("aria-expanded","true");document.body.classList.add("chat-open");cl.scrollTop=cl.scrollHeight;if(!small.matches)$("ci").focus()};$("cc").onclick=cx;
 cw.addEventListener("keydown",e=>{if(e.key==="Escape")cx()});
 function add(t,w){const d=document.createElement("p");d.className="m "+w;d.textContent=t;cl.append(d);cl.scrollTop=cl.scrollHeight;return d}
+function typing(){const d=document.createElement("p");d.className="m a typing";d.setAttribute("aria-label","O assistente está digitando");d.innerHTML="<i></i><i></i><i></i>";cl.append(d);cl.scrollTop=cl.scrollHeight;return d}
 cl.querySelectorAll(".ch button").forEach(b=>b.onclick=()=>{$("ci").value=b.textContent;cf.requestSubmit()});
-cf.onsubmit=async e=>{e.preventDefault();const t=$("ci").value.trim();if(!t||cb)return;$("ci").value="";add(t,"u");
+cf.onsubmit=async e=>{e.preventDefault();const t=$("ci").value.trim();if(!t||cb)return;$("ci").value="";cl.querySelector(".ch")?.remove();add(t,"u");
  if(!CONFIG.chatUrl){add("O assistente só funciona quando o site roda com o servidor. Consulte a seção Dúvidas.","a");return}
- CH.push({role:"user",content:t});cb=true;$("cs").disabled=true;const w=add("Digitando…","a");
+ CH.push({role:"user",content:t});cb=true;$("cs").disabled=true;const w=typing();
  try{const r=await fetch(CONFIG.chatUrl,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({mensagens:CH.slice(-7)})});const j=await r.json();if(!r.ok)throw new Error(j.message||"O assistente não conseguiu responder. Consulte Dúvidas.");
-  w.textContent=j.resposta;CH.push({role:"assistant",content:j.resposta});if(j.escalou)add("Essa informação ainda não foi divulgada. A organização vai publicá-la no site.","n")}
- catch(error){w.textContent=error instanceof TypeError?"Falha de conexão. Consulte Dúvidas ou tente novamente.":error.message;CH.pop()}
- cb=false;$("cs").disabled=false};
+  w.remove();add(j.resposta,"a");CH.push({role:"assistant",content:j.resposta});if(j.escalou)add("Essa informação ainda não foi divulgada. A organização vai publicá-la no site.","n")}
+ catch(error){w.remove();add(error instanceof TypeError?"Falha de conexão. Consulte Dúvidas ou tente novamente.":error.message,"a");CH.pop()}
+ cb=false;$("cs").disabled=false;if(!small.matches)$("ci").focus()};
 // inscrição
 $("pv-r").textContent=CONFIG.privacidade.responsavel;$("pv-p").textContent=CONFIG.privacidade.retencao;
 const F=$("f"),ST=$("st"),GO=$("go"),startedAt=Date.now();let busy=false;
