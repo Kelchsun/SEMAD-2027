@@ -147,7 +147,7 @@ function onScroll(){const vh=innerHeight,y=scrollY,docH=document.documentElement
  const probe=(hd.offsetHeight||52)/2;hd.classList.toggle("lite",!darkSecs.some(s=>{const r=s.getBoundingClientRect();return r.top<=probe&&r.bottom>probe}));
  if(RM){words.forEach(w=>w.classList.add("on"));return}
  const hr=heroSec.getBoundingClientRect();heroSec.style.setProperty("--hp",clamp(-hr.top/(hr.height-vh)).toFixed(3));
- const mr=mf.getBoundingClientRect(),p=clamp((-mr.top+vh*.25)/(mr.height-vh*1.15)),n=Math.round(p*words.length);
+ const mr=mf.getBoundingClientRect(),p=clamp((-mr.top+vh*.2)/(mr.height-vh*1.3)),n=Math.round(p*words.length);
  words.forEach((w,i)=>w.classList.toggle("on",i<n))}
 let sr=0;addEventListener("scroll",()=>{if(!sr)sr=requestAnimationFrame(()=>{sr=0;onScroll()})},{passive:true});addEventListener("resize",onScroll);onScroll();
 // Revela blocos ao entrar na tela e conta os números.
@@ -161,13 +161,19 @@ const navLinks=[...document.querySelectorAll("#nv a")];
 if("IntersectionObserver" in window){const io2=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)navLinks.forEach(a=>a.classList.toggle("cur",a.getAttribute("href")==="#"+e.target.id))}),{rootMargin:"-45% 0px -50% 0px"});
  navLinks.forEach(a=>{const s=document.querySelector(a.getAttribute("href"));if(s)io2.observe(s)});io2.observe(heroSec)}
 $("privacy-link").addEventListener("click",()=>document.querySelector(".pv").open=true);
-if(FINE&&!RM){
- // Luz do fundo segue o cursor.
+if(!RM){
+ // Luz do fundo segue o cursor ou o dedo.
  document.querySelectorAll(".hero .stk,.fin").forEach(sec=>{const au=sec.querySelector(".aura");
-  sec.addEventListener("pointermove",e=>{const r=sec.getBoundingClientRect();au.style.setProperty("--ax",((e.clientX-r.left)/r.width-.5)*8+"vmax");au.style.setProperty("--ay",((e.clientY-r.top)/r.height-.5)*8+"vmax")});
+  const mv=e=>{const r=sec.getBoundingClientRect();au.style.setProperty("--ax",((e.clientX-r.left)/r.width-.5)*8+"vmax");au.style.setProperty("--ay",((e.clientY-r.top)/r.height-.5)*8+"vmax")};
+  sec.addEventListener("pointermove",mv,{passive:true});sec.addEventListener("pointerdown",mv,{passive:true});
   sec.addEventListener("pointerleave",()=>{au.style.setProperty("--ax","0");au.style.setProperty("--ay","0")})});
- // Cartões do bento: brilho segue o cursor e inclinação leve.
- document.querySelectorAll(".tile").forEach(t=>{t.addEventListener("pointermove",e=>{const r=t.getBoundingClientRect();t.style.setProperty("--mx",e.clientX-r.left+"px");t.style.setProperty("--my",e.clientY-r.top+"px")})});
+ // Cartões do bento: brilho segue o cursor ou acende onde o dedo toca.
+ document.querySelectorAll(".tile").forEach(t=>{const g=e=>{const r=t.getBoundingClientRect();t.style.setProperty("--mx",e.clientX-r.left+"px");t.style.setProperty("--my",e.clientY-r.top+"px")};
+  t.addEventListener("pointermove",g,{passive:true});t.addEventListener("pointerdown",e=>{g(e);t.classList.add("tap");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("tap"),900)},{passive:true})});
+ // Sem mouse: a luz do hero passeia sozinha acompanhando a inclinação da rolagem.
+ if(!FINE){const au=document.querySelector(".hero .aura");let a=0;(function drift(){a+=.006;au.style.setProperty("--ax",Math.sin(a)*5+"vmax");au.style.setProperty("--ay",Math.cos(a*.8)*4+"vmax");requestAnimationFrame(drift)})()}
+}
+if(FINE&&!RM){
  // Botões principais atraídos pelo cursor.
  document.querySelectorAll(".hero .btn,.fin .btn").forEach(b=>{
   b.addEventListener("pointermove",e=>{const r=b.getBoundingClientRect();b.style.translate=`${((e.clientX-r.left-r.width/2)*.18).toFixed(1)}px ${((e.clientY-r.top-r.height/2)*.3).toFixed(1)}px`});
